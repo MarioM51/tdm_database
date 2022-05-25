@@ -1,0 +1,7 @@
+sql("INSERT INTO rols (created_at,updated_at,deleted_at,name,id) VALUES (now(),now(),NULL,'admin',79) ON CONFLICT DO NOTHING;")
+
+sql("INSERT INTO users (created_at,updated_at,deleted_at,email,password,id) VALUES (now(),now(),NULL,'mario2@email.com','$2a$12$OenFL4B1HRFZasAuL2my5.PNJ2GRR4wLl1BUDH2vl0ZBeU2Dv3.Gq',79) ON CONFLICT DO NOTHING;")
+
+sql("INSERT INTO users_rols (user_id,role_id) VALUES (79,79) ON CONFLICT DO NOTHING;")
+
+sql("INSERT INTO users (created_at,updated_at,deleted_at,email,id,password) VALUES (now(),now(),NULL,'anon@email.com',1,'') ON CONFLICT DO NOTHING;")

@@ -1,0 +1,19 @@
+create_table("blogs") {
+  t.Column("id", "integer", {primary: true})
+  t.Column("title", "string", {"size": 65})
+  t.Column("body", "text")
+  t.Column("thumbnail", "text", {"null": false})
+  t.Column("author", "string", {"size": 65 })
+  t.Column("abstract", "string", {"size": 170})
+}
+
+add_index("blogs", "title", {"unique": true, "name": "blog_title_unique"})
+
+create_table("blog_likes", {timestamps: false}) {
+  t.Column("fk_blog", "integer", {})
+  t.Column("fk_user", "integer", {})
+  t.Column("created_at", "timestamp", {"null": true})
+
+  t.ForeignKey("fk_blog", {"blogs": ["id"]}, {"on_delete": "cascade"})
+  t.ForeignKey("fk_user", {"users": ["id"]}, {"on_delete": "cascade"})
+}

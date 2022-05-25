@@ -1,0 +1,38 @@
+create_table("users") {
+  t.Column("id", "integer", {primary: true})
+  t.Column("email", "string", {"size": 50})
+  t.Column("password", "string", {"size": 65})
+  t.Column("activation_hash", "string", {"size": 65, "null": true})
+  t.Column("deleted_at", "timestamp", {"null": true})
+}
+add_index("users", "email", {"unique": true, "name": "user_email_unique"})
+
+
+
+
+create_table("rols") {
+  t.Column("id", "integer", {primary: true})
+  t.Column("name", "string", {"size": 40})
+  t.Column("deleted_at", "timestamp", {"null": true})
+}
+add_index("rols", "name", {"unique": true, "name": "rol_name_unique"})
+
+
+
+
+
+create_table("users_rols", {timestamps: false}) {
+  t.Column("user_id", "integer")
+  t.Column("role_id", "integer")
+  t.PrimaryKey("role_id", "user_id")
+}
+add_foreign_key("users_rols", "role_id", {"rols": ["id"]}, {
+    "name": "fk_rol_in_users_rols",
+    "on_delete": "cascade",
+    "on_update": "cascade",
+})
+add_foreign_key("users_rols", "user_id", {"users": ["id"]}, {
+    "name": "fk_user_in_users_rols",
+    "on_delete": "cascade",
+    "on_update": "cascade",
+})
