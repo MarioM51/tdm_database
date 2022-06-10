@@ -19,6 +19,112 @@ SET row_security = off;
 SET default_tablespace = '';
 
 --
+-- Name: blog_likes; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.blog_likes (
+    fk_blog integer NOT NULL,
+    fk_user integer NOT NULL,
+    created_at timestamp without time zone
+);
+
+
+ALTER TABLE public.blog_likes OWNER TO postgres;
+
+--
+-- Name: blogs; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.blogs (
+    id integer NOT NULL,
+    title character varying(65) NOT NULL,
+    body text NOT NULL,
+    thumbnail text,
+    author character varying(65) NOT NULL,
+    abstract character varying(170) NOT NULL,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.blogs OWNER TO postgres;
+
+--
+-- Name: blogs_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.blogs_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.blogs_id_seq OWNER TO postgres;
+
+--
+-- Name: blogs_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.blogs_id_seq OWNED BY public.blogs.id;
+
+
+--
+-- Name: orders; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.orders (
+    id integer NOT NULL,
+    id_user integer NOT NULL,
+    deleted_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.orders OWNER TO postgres;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.orders_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.orders_id_seq OWNER TO postgres;
+
+--
+-- Name: orders_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.orders_id_seq OWNED BY public.orders.id;
+
+
+--
+-- Name: orders_products; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.orders_products (
+    id_order integer NOT NULL,
+    id_product integer NOT NULL,
+    amount integer NOT NULL,
+    deleted_at timestamp without time zone,
+    created_at timestamp without time zone NOT NULL,
+    updated_at timestamp without time zone NOT NULL
+);
+
+
+ALTER TABLE public.orders_products OWNER TO postgres;
+
+--
 -- Name: product_images; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -204,6 +310,20 @@ CREATE TABLE public.users_rols (
 ALTER TABLE public.users_rols OWNER TO postgres;
 
 --
+-- Name: blogs id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.blogs ALTER COLUMN id SET DEFAULT nextval('public.blogs_id_seq'::regclass);
+
+
+--
+-- Name: orders id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders ALTER COLUMN id SET DEFAULT nextval('public.orders_id_seq'::regclass);
+
+
+--
 -- Name: product_images id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -229,6 +349,22 @@ ALTER TABLE ONLY public.rols ALTER COLUMN id SET DEFAULT nextval('public.rols_id
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Name: blogs blogs_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.blogs
+    ADD CONSTRAINT blogs_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: orders orders_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders_pkey PRIMARY KEY (id);
 
 
 --
@@ -272,6 +408,13 @@ ALTER TABLE ONLY public.users_rols
 
 
 --
+-- Name: blog_title_unique; Type: INDEX; Schema: public; Owner: postgres
+--
+
+CREATE UNIQUE INDEX blog_title_unique ON public.blogs USING btree (title);
+
+
+--
 -- Name: product_name_unique; Type: INDEX; Schema: public; Owner: postgres
 --
 
@@ -300,6 +443,22 @@ CREATE UNIQUE INDEX user_email_unique ON public.users USING btree (email);
 
 
 --
+-- Name: blog_likes blog_likes_fk_blog_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.blog_likes
+    ADD CONSTRAINT blog_likes_fk_blog_fkey FOREIGN KEY (fk_blog) REFERENCES public.blogs(id) ON DELETE CASCADE;
+
+
+--
+-- Name: blog_likes blog_likes_fk_user_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.blog_likes
+    ADD CONSTRAINT blog_likes_fk_user_fkey FOREIGN KEY (fk_user) REFERENCES public.users(id) ON DELETE CASCADE;
+
+
+--
 -- Name: users_rols fk_rol_in_users_rols; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -313,6 +472,30 @@ ALTER TABLE ONLY public.users_rols
 
 ALTER TABLE ONLY public.users_rols
     ADD CONSTRAINT fk_user_in_users_rols FOREIGN KEY (user_id) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: orders orders__fk_user; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders
+    ADD CONSTRAINT orders__fk_user FOREIGN KEY (id_user) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: orders_products orders_products__fk_order; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_products
+    ADD CONSTRAINT orders_products__fk_order FOREIGN KEY (id_order) REFERENCES public.orders(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: orders_products orders_products__fk_products; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.orders_products
+    ADD CONSTRAINT orders_products__fk_products FOREIGN KEY (id_product) REFERENCES public.products(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

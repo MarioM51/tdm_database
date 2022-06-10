@@ -1,0 +1,30 @@
+create_table("orders") {
+  t.Column("id", "integer", {primary: true})
+  t.Column("id_user", "integer", {})
+  t.Column("deleted_at", "timestamp", {"null": true})
+}
+add_foreign_key("orders", "id_user", {"users": ["id"]}, {
+    "name": "orders__fk_user",
+    "on_delete": "cascade",
+    "on_update": "cascade",
+})
+
+
+
+create_table("orders_products") {
+  t.Column("id_order", "integer", {})
+  t.Column("id_product", "integer", {})
+  t.Column("amount", "integer", {})
+  t.Column("deleted_at", "timestamp", {"null": true})
+
+}
+add_foreign_key("orders_products", "id_order", {"orders": ["id"]}, {
+    "name": "orders_products__fk_order",
+    "on_delete": "cascade",
+    "on_update": "cascade",
+})
+add_foreign_key("orders_products", "id_product", {"products": ["id"]}, {
+    "name": "orders_products__fk_products",
+    "on_delete": "cascade",
+    "on_update": "cascade",
+})
