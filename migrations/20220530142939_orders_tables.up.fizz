@@ -2,6 +2,8 @@ create_table("orders") {
   t.Column("id", "integer", {primary: true})
   t.Column("id_user", "integer", {})
   t.Column("deleted_at", "timestamp", {"null": true})
+  t.Column("confirmed_at", "timestamp", {"null": true})
+  t.Column("accepted_at", "timestamp", {"null": true})
 }
 add_foreign_key("orders", "id_user", {"users": ["id"]}, {
     "name": "orders__fk_user",

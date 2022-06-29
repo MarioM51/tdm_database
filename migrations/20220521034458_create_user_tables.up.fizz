@@ -4,6 +4,14 @@ create_table("users") {
   t.Column("password", "string", {"size": 65})
   t.Column("activation_hash", "string", {"size": 65, "null": true})
   t.Column("deleted_at", "timestamp", {"null": true})
+
+  t.Column("full_name", "string", {"size": 51, "null": true})
+  t.Column("phone", "string", {"size": 16, "null": true})
+  t.Column("zip", "string", {"size": 7, "null": true})
+  t.Column("state", "string", {"size": 31, "null": true})
+  t.Column("city", "string", {"size": 31, "null": true})
+  t.Column("street", "string", {"size": 81, "null": true})
+  t.Column("street_num", "string", {"size": 6, "null": true})
 }
 add_index("users", "email", {"unique": true, "name": "user_email_unique"})
 

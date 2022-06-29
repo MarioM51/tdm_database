@@ -79,6 +79,8 @@ CREATE TABLE public.orders (
     id integer NOT NULL,
     id_user integer NOT NULL,
     deleted_at timestamp without time zone,
+    confirmed_at timestamp without time zone,
+    accepted_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -268,6 +270,13 @@ CREATE TABLE public.users (
     password character varying(65) NOT NULL,
     activation_hash character varying(65),
     deleted_at timestamp without time zone,
+    full_name character varying(51),
+    phone character varying(16),
+    zip character varying(7),
+    state character varying(31),
+    city character varying(31),
+    street character varying(81),
+    street_num character varying(6),
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
