@@ -132,6 +132,7 @@ ALTER TABLE public.orders_products OWNER TO postgres;
 
 CREATE TABLE public.product_images (
     id integer NOT NULL,
+    fk_product integer NOT NULL,
     mime_type character varying(15) NOT NULL,
     base64 text NOT NULL,
     created_at timestamp without time zone NOT NULL,
@@ -508,11 +509,11 @@ ALTER TABLE ONLY public.orders_products
 
 
 --
--- Name: product_images product_images_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: product_images product_images_fk_product_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.product_images
-    ADD CONSTRAINT product_images_id_fkey FOREIGN KEY (id) REFERENCES public.products(id) ON DELETE CASCADE;
+    ADD CONSTRAINT product_images_fk_product_fkey FOREIGN KEY (fk_product) REFERENCES public.products(id) ON DELETE CASCADE;
 
 
 --

@@ -8,10 +8,11 @@ add_index("products", "name", {"unique": true, "name": "product_name_unique"})
 
 create_table("product_images") {
   t.Column("id", "integer", {primary: true})
+  t.Column("fk_product", "integer", {})
   t.Column("mime_type", "string", {"size": 15})
   t.Column("base64", "text", {})
 
-  t.ForeignKey("id", {"products": ["id"]}, {"on_delete": "cascade"})
+  t.ForeignKey("fk_product", {"products": ["id"]}, {"on_delete": "cascade"})
 }
 
 create_table("product_likes", {timestamps: false}) {
