@@ -19,6 +19,45 @@ SET row_security = off;
 SET default_tablespace = '';
 
 --
+-- Name: blog_comments; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.blog_comments (
+    id integer NOT NULL,
+    id_user integer NOT NULL,
+    id_blog integer NOT NULL,
+    text character varying(250) NOT NULL,
+    rating smallint NOT NULL,
+    created_at timestamp without time zone,
+    deleted_at timestamp without time zone
+);
+
+
+ALTER TABLE public.blog_comments OWNER TO postgres;
+
+--
+-- Name: blog_comments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.blog_comments_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.blog_comments_id_seq OWNER TO postgres;
+
+--
+-- Name: blog_comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.blog_comments_id_seq OWNED BY public.blog_comments.id;
+
+
+--
 -- Name: blog_likes; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -320,6 +359,13 @@ CREATE TABLE public.users_rols (
 ALTER TABLE public.users_rols OWNER TO postgres;
 
 --
+-- Name: blog_comments id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.blog_comments ALTER COLUMN id SET DEFAULT nextval('public.blog_comments_id_seq'::regclass);
+
+
+--
 -- Name: blogs id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -359,6 +405,14 @@ ALTER TABLE ONLY public.rols ALTER COLUMN id SET DEFAULT nextval('public.rols_id
 --
 
 ALTER TABLE ONLY public.users ALTER COLUMN id SET DEFAULT nextval('public.users_id_seq'::regclass);
+
+
+--
+-- Name: blog_comments blog_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.blog_comments
+    ADD CONSTRAINT blog_comments_pkey PRIMARY KEY (id);
 
 
 --
@@ -450,6 +504,22 @@ CREATE UNIQUE INDEX schema_migration_version_idx ON public.schema_migration USIN
 --
 
 CREATE UNIQUE INDEX user_email_unique ON public.users USING btree (email);
+
+
+--
+-- Name: blog_comments blog_comments__fk_blog; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.blog_comments
+    ADD CONSTRAINT blog_comments__fk_blog FOREIGN KEY (id_blog) REFERENCES public.blogs(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: blog_comments blog_comments__fk_user; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.blog_comments
+    ADD CONSTRAINT blog_comments__fk_user FOREIGN KEY (id_user) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

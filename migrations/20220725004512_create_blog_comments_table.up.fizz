@@ -1,0 +1,21 @@
+create_table("blog_comments", {timestamps: false}) {
+  t.Column("id", "integer", {primary: true})
+  t.Column("id_user", "integer", {})
+  t.Column("id_blog", "integer", {})
+  t.Column("text", "string", {"size": 250})
+  t.Column("rating", "smallint", {})
+  t.Column("created_at", "timestamp", {"null": true})
+  t.Column("deleted_at", "timestamp", {"null": true})
+}
+
+add_foreign_key("blog_comments", "id_user", {"users": ["id"]}, {
+    "name": "blog_comments__fk_user",
+    "on_delete": "cascade",
+    "on_update": "cascade",
+})
+
+add_foreign_key("blog_comments", "id_blog", {"blogs": ["id"]}, {
+    "name": "blog_comments__fk_blog",
+    "on_delete": "cascade",
+    "on_update": "cascade",
+})
