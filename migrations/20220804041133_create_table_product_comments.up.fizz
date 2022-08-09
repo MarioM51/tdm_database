@@ -1,0 +1,21 @@
+create_table("product_comments", {timestamps: false}) {
+  t.Column("id", "integer", {primary: true})
+  t.Column("id_user", "integer", {})
+  t.Column("id_target", "integer", {})
+  t.Column("content", "string", {"size": 250})
+  t.Column("stars", "smallint", {})
+  t.Column("created_at", "timestamp", {"null": true})
+  t.Column("deleted_at", "timestamp", {"null": true})
+}
+
+add_foreign_key("product_comments", "id_user", {"users": ["id"]}, {
+    "name": "product_comments__fk_user",
+    "on_delete": "cascade",
+    "on_update": "cascade",
+})
+
+add_foreign_key("product_comments", "id_target", {"products": ["id"]}, {
+    "name": "product_comments__fk_products",
+    "on_delete": "cascade",
+    "on_update": "cascade",
+})

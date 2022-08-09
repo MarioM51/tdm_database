@@ -166,6 +166,45 @@ CREATE TABLE public.orders_products (
 ALTER TABLE public.orders_products OWNER TO postgres;
 
 --
+-- Name: product_comments; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.product_comments (
+    id integer NOT NULL,
+    id_user integer NOT NULL,
+    id_target integer NOT NULL,
+    content character varying(250) NOT NULL,
+    stars smallint NOT NULL,
+    created_at timestamp without time zone,
+    deleted_at timestamp without time zone
+);
+
+
+ALTER TABLE public.product_comments OWNER TO postgres;
+
+--
+-- Name: product_comments_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.product_comments_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER TABLE public.product_comments_id_seq OWNER TO postgres;
+
+--
+-- Name: product_comments_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.product_comments_id_seq OWNED BY public.product_comments.id;
+
+
+--
 -- Name: product_images; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -380,6 +419,13 @@ ALTER TABLE ONLY public.orders ALTER COLUMN id SET DEFAULT nextval('public.order
 
 
 --
+-- Name: product_comments id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_comments ALTER COLUMN id SET DEFAULT nextval('public.product_comments_id_seq'::regclass);
+
+
+--
 -- Name: product_images id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -429,6 +475,14 @@ ALTER TABLE ONLY public.blogs
 
 ALTER TABLE ONLY public.orders
     ADD CONSTRAINT orders_pkey PRIMARY KEY (id);
+
+
+--
+-- Name: product_comments product_comments_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_comments
+    ADD CONSTRAINT product_comments_pkey PRIMARY KEY (id);
 
 
 --
@@ -576,6 +630,22 @@ ALTER TABLE ONLY public.orders_products
 
 ALTER TABLE ONLY public.orders_products
     ADD CONSTRAINT orders_products__fk_products FOREIGN KEY (id_product) REFERENCES public.products(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: product_comments product_comments__fk_products; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_comments
+    ADD CONSTRAINT product_comments__fk_products FOREIGN KEY (id_target) REFERENCES public.products(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: product_comments product_comments__fk_user; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_comments
+    ADD CONSTRAINT product_comments__fk_user FOREIGN KEY (id_user) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --
