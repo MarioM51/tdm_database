@@ -1,0 +1,3 @@
+
+drop_column("products", "on_home_screen")
+drop_column("blogs", "on_home_screen")

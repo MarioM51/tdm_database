@@ -13,3 +13,14 @@ psql \
   --username=carrodemaderauserdb \
   --dbname=carro_de_madera_db
 ```
+
+## Comandos utile
+
+```r
+pg_dump --data-only --verbose \
+  --port 5432 \
+  --username carrodemaderauserdb \
+  --host carrodemaderadb.postgres.database.azure.com \
+  --file backup_202208.backup.sql \
+  carro_de_madera_db
+```

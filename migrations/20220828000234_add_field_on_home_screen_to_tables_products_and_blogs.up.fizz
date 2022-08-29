@@ -1,0 +1,4 @@
+
+add_column("products", "on_home_screen", "timestamp", {"null": true})
+
+add_column("blogs", "on_home_screen", "timestamp", {"null": true})
