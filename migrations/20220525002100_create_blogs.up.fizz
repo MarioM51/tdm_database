@@ -5,6 +5,7 @@ create_table("blogs") {
   t.Column("thumbnail", "text", {"null": false})
   t.Column("author", "string", {"size": 65 })
   t.Column("abstract", "string", {"size": 170})
+  t.Column("deleted_at", "timestamp", {"null": true})
 }
 
 add_index("blogs", "title", {"unique": true, "name": "blog_title_unique"})

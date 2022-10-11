@@ -29,7 +29,8 @@ CREATE TABLE public.blog_comments (
     text character varying(250) NOT NULL,
     rating smallint NOT NULL,
     created_at timestamp without time zone,
-    deleted_at timestamp without time zone
+    deleted_at timestamp without time zone,
+    response_to integer
 );
 
 
@@ -81,6 +82,7 @@ CREATE TABLE public.blogs (
     thumbnail text,
     author character varying(65) NOT NULL,
     abstract character varying(170) NOT NULL,
+    deleted_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL,
     on_home_screen timestamp without time zone
@@ -177,7 +179,8 @@ CREATE TABLE public.product_comments (
     content character varying(250) NOT NULL,
     stars smallint NOT NULL,
     created_at timestamp without time zone,
-    deleted_at timestamp without time zone
+    deleted_at timestamp without time zone,
+    response_to integer
 );
 
 
@@ -214,6 +217,7 @@ CREATE TABLE public.product_images (
     fk_product integer NOT NULL,
     mime_type character varying(15) NOT NULL,
     base64 text NOT NULL,
+    deleted_at timestamp without time zone,
     created_at timestamp without time zone NOT NULL,
     updated_at timestamp without time zone NOT NULL
 );
@@ -265,6 +269,7 @@ CREATE TABLE public.products (
     name character varying(60) NOT NULL,
     price integer NOT NULL,
     description character varying(160) NOT NULL,
+    deleted_at timestamp without time zone,
     on_home_screen timestamp without time zone
 );
 
@@ -579,6 +584,14 @@ ALTER TABLE ONLY public.blog_comments
 
 
 --
+-- Name: blog_comments blog_comments__recursive_key_response_to; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.blog_comments
+    ADD CONSTRAINT blog_comments__recursive_key_response_to FOREIGN KEY (response_to) REFERENCES public.blog_comments(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
 -- Name: blog_likes blog_likes_fk_blog_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -648,6 +661,14 @@ ALTER TABLE ONLY public.product_comments
 
 ALTER TABLE ONLY public.product_comments
     ADD CONSTRAINT product_comments__fk_user FOREIGN KEY (id_user) REFERENCES public.users(id) ON UPDATE CASCADE ON DELETE CASCADE;
+
+
+--
+-- Name: product_comments product_comments__recursive_key_response_to; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.product_comments
+    ADD CONSTRAINT product_comments__recursive_key_response_to FOREIGN KEY (response_to) REFERENCES public.product_comments(id) ON UPDATE CASCADE ON DELETE CASCADE;
 
 
 --

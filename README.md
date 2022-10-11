@@ -14,13 +14,21 @@ psql \
   --dbname=carro_de_madera_db
 ```
 
-## Comandos utile
+## Comandos utiles
+
+Crear respaldo
 
 ```r
 pg_dump --data-only --verbose \
   --port 5432 \
-  --username carrodemaderauserdb \
-  --host carrodemaderadb.postgres.database.azure.com \
-  --file backup_202208.backup.sql \
+  --username postgres \
+  --host 127.0.0.1 \
+  --file backup_2022-09-27.backup.sql \
   carro_de_madera_db
+```
+
+Meter respaldo
+
+```r
+psql -d carro_de_madera_db -U postgres -f ./backups/backup_2022-09-27.backup.sql
 ```
